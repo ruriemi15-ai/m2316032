@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>タイムワープ・ボール</title>
+    <style>
+        /* CSSセクション */
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            user-select: none;
+        }
+        #game-container {
+            width: 300px;
+            height: 400px;
+            border: 5px solid #bdc3c7;
+            position: relative;
+            background-color: #34495e;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        #ball {
+            width: 30px;
+            height: 30px;
+            background-color: #e74c3c;
+            border-radius: 50%;
+            position: absolute;
+            top: -30px;
+            left: calc(50% - 15px);
+            transition: transform linear;
+        }
+        #target-line {
+            width: 100%;
+            height: 3px;
+            background-color: #e74c3c;
+            position: absolute;
+            bottom: 50px;
+        }
+        #start-button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #3498db;
+            color: white;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        #start-button:hover {
+            background-color: #2980b9;
+        }
+        #score-display, #total-score-display {
+            font-size: 1.5em;
+            margin-top: 10px;
+        }
+        #message {
+            font-size: 1.2em;
+            color: #f1c40f;
+            min-height: 25px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>タイムワープ・ボール</h1>
+    <p>ボールが赤いラインに到達するタイミングでクリック！</p>
+    <div id="game-container">
+        <div id="ball"></div>
+        <div id="target-line"></div>
+    </div>
+    <button id="start-button">ゲーム開始</button>
+    <div id="message"></div>
+    <div id="score-display">今回のスコア: 0</div>
+    <div id="total-score-display">合計スコア (0/3): 0</div>
+
+    <script>
+        // JavaScriptセクション
+        const gameContainer = document.getElementById('game-container');
+        const ball = document.getElementById('ball');
+        const startButton = document.getElementById('start-button');
+        const scoreDisplay = document.getElementById('score-display');
+        const totalScoreDisplay = document.getElementById('total-score-display');
+        const message = document.getElementById('message');
+
+        const targetY = 350; // ボールが到達する目標Y座標 (400px - 50px)
+        const gameHeight = 400;
+        const ballSize = 30;
+
+        let totalScore = 0;
+        let round = 0;
+        let isPlaying = false;
+        let startTime = 0;
+        let currentAnimation = null;
+
+        function startGame() {
+            if (isPlaying) return;
+            if (round >= 3) {
+                totalScore = 0;
+                round = 0;
+                totalScoreDisplay.textContent = `合計スコア (0/3): 0`;
+            }
+
+            isPlaying = true;
+            round++;
+            startButton.style.display = 'none';
+            message.textContent = `ラウンド ${round} スタート！`;
+            scoreDisplay.textContent = `今回のスコア: 0`;
+
+            const duration = Math.random() * 2 + 1.5; // 1.5秒から3.5秒のランダムな時間
+            ball.style.transitionDuration = `${duration}s`;
+            ball.style.transform = `translateY(${gameHeight}px)`;
+
+            startTime = performance.now();
+            
+            // 落下アニメーションの完了を待つタイムアウト
+            currentAnimation = setTimeout(() => {
+                endGame(null);
+            }, duration * 1000 + 100); // アニメーション時間 + 少し余裕
+        }
+
+        function endGame(event) {
+            if (!isPlaying) return;
+            isPlaying = false;
+            
+            clearTimeout(currentAnimation);
+            ball.style.transitionDuration = '0s'; // アニメーションをリセット
+            ball.style.transform = 'translateY(0)';
+
+            let score = 0;
+            if (event) {
+                const clickTime = performance.now();
+                const elapsedTime = (clickTime - startTime) / 1000;
+                const ballY = (elapsedTime / parseFloat(ball.style.transitionDuration)) * gameHeight;
+                const diff = Math.abs(ballY - targetY);
+                score = Math.max(0, 1000 - diff); // 差が小さいほど高得点
+
+                message.textContent = `スコア: ${Math.round(score)}点`;
+                scoreDisplay.textContent = `今回のスコア: ${Math.round(score)}`;
+            } else {
+                message.textContent = `時間切れ！`;
+            }
+
+            totalScore += Math.round(score);
+            totalScoreDisplay.textContent = `合計スコア (${round}/3): ${totalScore}`;
+
+            if (round < 3) {
+                startButton.textContent = '次のラウンドへ';
+                startButton.style.display = 'block';
+            } else {
+                startButton.textContent = 'もう一度プレイ';
+                startButton.style.display = 'block';
+                message.textContent = `最終合計スコア: ${totalScore}点！`;
+            }
+        }
+
+        startButton.addEventListener('click', startGame);
+        gameContainer.addEventListener('click', (e) => {
+            if (isPlaying) {
+                endGame(e);
+            }
+        });
+
+    </script>
+</body>
+</html>
