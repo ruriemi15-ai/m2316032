@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>光の反射</title>
+    <style>
+        /* CSSセクション */
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            user-select: none;
+        }
+        #game-container {
+            width: 300px;
+            height: 300px;
+            border: 4px solid #555;
+            position: relative;
+            background-color: #fff;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        #block {
+            width: 50px;
+            height: 50px;
+            background-color: #f39c12;
+            position: absolute;
+            display: none;
+            cursor: pointer;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+        #start-button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #3498db;
+            color: white;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        #start-button:hover {
+            background-color: #2980b9;
+        }
+        #score-display, #message {
+            font-size: 1.5em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>光の反射</h1>
+    <p>光るブロックを素早くクリック！</p>
+    <div id="game-container">
+        <div id="block"></div>
+    </div>
+    <button id="start-button">ゲーム開始</button>
+    <div id="message"></div>
+    <div id="score-display">スコア: 0</div>
+
+    <script>
+        // JavaScriptセクション
+        const gameContainer = document.getElementById('game-container');
+        const block = document.getElementById('block');
+        const startButton = document.getElementById('start-button');
+        const scoreDisplay = document.getElementById('score-display');
+        const message = document.getElementById('message');
+
+        let score = 0;
+        let isPlaying = false;
+        let timeoutId;
+        
+        const containerWidth = 300;
+        const containerHeight = 300;
+        const blockSize = 50;
+
+        function startGame() {
+            score = 0;
+            isPlaying = true;
+            startButton.style.display = 'none';
+            message.textContent = '';
+            scoreDisplay.textContent = 'スコア: 0';
+            spawnBlock();
+        }
+
+        function spawnBlock() {
+            if (!isPlaying) return;
+
+            const x = Math.floor(Math.random() * (containerWidth - blockSize));
+            const y = Math.floor(Math.random() * (containerHeight - blockSize));
+            
+            block.style.left = `${x}px`;
+            block.style.top = `${y}px`;
+            block.style.display = 'block';
+
+            const delay = Math.random() * 800 + 400; // 0.4秒から1.2秒で消える
+            
+            timeoutId = setTimeout(() => {
+                if (isPlaying) {
+                    endGame();
+                }
+            }, delay);
+        }
+
+        function endGame() {
+            isPlaying = false;
+            block.style.display = 'none';
+            message.textContent = `ゲームオーバー！スコア: ${score}`;
+            startButton.textContent = 'もう一度プレイ';
+            startButton.style.display = 'block';
+        }
+
+        block.addEventListener('click', () => {
+            if (isPlaying) {
+                clearTimeout(timeoutId);
+                score++;
+                scoreDisplay.textContent = `スコア: ${score}`;
+                spawnBlock();
+            }
+        });
+
+        gameContainer.addEventListener('click', (e) => {
+            if (e.target.id === 'game-container') {
+                if (isPlaying) {
+                    endGame();
+                }
+            }
+        });
+
+        startButton.addEventListener('click', startGame);
+
+    </script>
+</body>
+</html>
