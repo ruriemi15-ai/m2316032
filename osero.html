@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>オセロゲーム</title>
+    <style>
+        /* CSSセクション */
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #game-board {
+            display: grid;
+            grid-template-columns: repeat(8, 50px);
+            grid-template-rows: repeat(8, 50px);
+            border: 2px solid #333;
+            background-color: #006400; /* 盤面の背景色を緑に */
+        }
+        .cell {
+            width: 50px;
+            height: 50px;
+            border: 1px solid #333;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .piece {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            transition: transform 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .piece:hover {
+            transform: scale(1.1);
+        }
+        .piece.black {
+            background-color: #000;
+        }
+        .piece.white {
+            background-color: #fff;
+        }
+        #status {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>オセロゲーム</h1>
+    <div id="status">黒のターンです</div>
+    <div id="game-board"></div>
+    <button onclick="resetGame()">リセット</button>
+
+    <script>
+        // JavaScriptセクション
+        const board = document.getElementById('game-board');
+        const statusDiv = document.getElementById('status');
+        let gameBoard = [];
+        let currentPlayer = 1; // 1: 黒, -1: 白
+
+        function initBoard() {
+            gameBoard = Array(8).fill(null).map(() => Array(8).fill(0));
+            gameBoard[3][3] = gameBoard[4][4] = -1; // 白
+            gameBoard[3][4] = gameBoard[4][3] = 1; // 黒
+            currentPlayer = 1;
+        }
+
+        function renderBoard() {
+            board.innerHTML = '';
+            for (let r = 0; r < 8; r++) {
+                for (let c = 0; c < 8; c++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('cell');
+                    cell.dataset.row = r;
+                    cell.dataset.col = c;
+                    cell.addEventListener('click', () => handleMove(r, c));
+
+                    if (gameBoard[r][c] !== 0) {
+                        const piece = document.createElement('div');
+                        piece.classList.add('piece');
+                        piece.classList.add(gameBoard[r][c] === 1 ? 'black' : 'white');
+                        cell.appendChild(piece);
+                    }
+                    board.appendChild(cell);
+                }
+            }
+            updateStatus();
+        }
+
+        function checkValidMove(r, c, player) {
+            if (gameBoard[r][c] !== 0) return false;
+            let canFlip = false;
+            const directions = [[-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [-1, 1], [1, -1], [1, 1]];
+
+            for (const [dr, dc] of directions) {
+                let flipCount = 0;
+                let newR = r + dr;
+                let newC = c + dc;
+
+                while (newR >= 0 && newR < 8 && newC >= 0 && newC < 8) {
+                    if (gameBoard[newR][newC] === -player) {
+                        flipCount++;
+                        newR += dr;
+                        newC += dc;
+                    } else if (gameBoard[newR][newC] === player) {
+                        if (flipCount > 0) canFlip = true;
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            return canFlip;
+        }
+
+        function flipPieces(r, c, player) {
+            const directions = [[-1, 0], [1, 0], [0, -1], [0, 1], [-1, -1], [-1, 1], [1, -1], [1, 1]];
+            const flipped = [];
+
+            for (const [dr, dc] of directions) {
+                let toFlip = [];
+                let newR = r + dr;
+                let newC = c + dc;
+
+                while (newR >= 0 && newR < 8 && newC >= 0 && newC < 8) {
+                    if (gameBoard[newR][newC] === -player) {
+                        toFlip.push([newR, newC]);
+                        newR += dr;
+                        newC += dc;
+                    } else if (gameBoard[newR][newC] === player) {
+                        flipped.push(...toFlip);
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            flipped.forEach(([fr, fc]) => gameBoard[fr][fc] = player);
+            gameBoard[r][c] = player;
+        }
+
+        function handleMove(r, c) {
+            if (checkValidMove(r, c, currentPlayer)) {
+                flipPieces(r, c, currentPlayer);
+                currentPlayer *= -1; // ターン交代
+                checkPass();
+                renderBoard();
+                checkGameOver();
+            } else {
+                alert('そこには置けません');
+            }
+        }
+
+        function checkPass() {
+            let canMove = false;
+            for (let r = 0; r < 8; r++) {
+                for (let c = 0; c < 8; c++) {
+                    if (checkValidMove(r, c, currentPlayer)) {
+                        canMove = true;
+                        break;
+                    }
+                }
+                if (canMove) break;
+            }
+            if (!canMove) {
+                alert(`${currentPlayer === 1 ? '黒' : '白'}は置ける場所がないためパスします。`);
+                currentPlayer *= -1; // ターン交代
+                renderBoard();
+            }
+        }
+
+        function checkGameOver() {
+            let blackCount = 0;
+            let whiteCount = 0;
+            let totalPieces = 0;
+            let canBlackMove = false;
+            let canWhiteMove = false;
+
+            for (let r = 0; r < 8; r++) {
+                for (let c = 0; c < 8; c++) {
+                    if (gameBoard[r][c] === 1) blackCount++;
+                    if (gameBoard[r][c] === -1) whiteCount++;
+                    if (gameBoard[r][c] !== 0) totalPieces++;
+                    if (!canBlackMove && checkValidMove(r, c, 1)) canBlackMove = true;
+                    if (!canWhiteMove && checkValidMove(r, c, -1)) canWhiteMove = true;
+                }
+            }
+
+            if (totalPieces === 64 || (!canBlackMove && !canWhiteMove)) {
+                let winner = '';
+                if (blackCount > whiteCount) {
+                    winner = '黒の勝ちです！';
+                } else if (whiteCount > blackCount) {
+                    winner = '白の勝ちです！';
+                } else {
+                    winner = '引き分けです！';
+                }
+                statusDiv.textContent = `ゲーム終了！ ${winner} (黒: ${blackCount}, 白: ${whiteCount})`;
+                return;
+            }
+            updateStatus();
+        }
+
+        function updateStatus() {
+            let blackCount = 0;
+            let whiteCount = 0;
+            for (let r = 0; r < 8; r++) {
+                for (let c = 0; c < 8; c++) {
+                    if (gameBoard[r][c] === 1) blackCount++;
+                    if (gameBoard[r][c] === -1) whiteCount++;
+                }
+            }
+            statusDiv.textContent = `${currentPlayer === 1 ? '黒' : '白'}のターンです。 (黒: ${blackCount}, 白: ${whiteCount})`;
+        }
+
+        function resetGame() {
+            initBoard();
+            renderBoard();
+        }
+
+        // 初期化
+        initBoard();
+        renderBoard();
+    </script>
+</body>
+</html>
