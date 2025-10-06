@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>クロマ・チェイス</title>
+    <style>
+        /* CSSセクション */
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            user-select: none;
+        }
+        #game-container {
+            width: 300px;
+            height: 400px;
+            border: 4px solid #555;
+            position: relative;
+            background-color: #fff;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        #ball {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            position: absolute;
+            top: -30px;
+            left: calc(50% - 15px);
+        }
+        #target {
+            width: 100%;
+            height: 50px;
+            position: absolute;
+            bottom: 0;
+        }
+        #start-button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #2ecc71;
+            color: white;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        #start-button:hover {
+            background-color: #27ae60;
+        }
+        #score-display, #message {
+            font-size: 1.5em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>クロマ・チェイス</h1>
+    <p>ボールと下のブロックの色が同じになったらクリック！</p>
+    <div id="game-container">
+        <div id="ball"></div>
+        <div id="target"></div>
+    </div>
+    <button id="start-button">ゲーム開始</button>
+    <div id="message"></div>
+    <div id="score-display">スコア: 0</div>
+
+    <script>
+        // JavaScriptセクション
+        const gameContainer = document.getElementById('game-container');
+        const ball = document.getElementById('ball');
+        const target = document.getElementById('target');
+        const startButton = document.getElementById('start-button');
+        const scoreDisplay = document.getElementById('score-display');
+        const message = document.getElementById('message');
+
+        const colors = ['#e74c3c', '#3498db', '#f1c40f', '#2ecc71', '#9b59b6'];
+        const gameHeight = 400;
+        const ballSize = 30;
+
+        let score = 0;
+        let isPlaying = false;
+        let ballColor = '';
+        let targetColor = '';
+        let animationFrameId;
+
+        function getRandomColor() {
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        function startGame() {
+            score = 0;
+            isPlaying = true;
+            startButton.style.display = 'none';
+            message.textContent = '';
+            scoreDisplay.textContent = 'スコア: 0';
+            resetBall();
+        }
+
+        function resetBall() {
+            ball.style.transition = '0s';
+            ball.style.top = `-30px`;
+            
+            ballColor = getRandomColor();
+            targetColor = getRandomColor();
+            
+            ball.style.backgroundColor = ballColor;
+            target.style.backgroundColor = targetColor;
+            
+            setTimeout(() => {
+                ball.style.transition = 'top linear';
+                startFalling();
+            }, 50);
+        }
+
+        function startFalling() {
+            const duration = Math.random() * 1 + 1.5; // 1.5秒から2.5秒
+            ball.style.transitionDuration = `${duration}s`;
+            ball.style.top = `${gameHeight}px`;
+
+            animationFrameId = setTimeout(() => {
+                endGame(false); // 時間内にクリックしなかった場合
+            }, duration * 1000);
+        }
+
+        function endGame(isSuccess) {
+            clearTimeout(animationFrameId);
+            isPlaying = false;
+            
+            if (isSuccess) {
+                score++;
+                message.textContent = '成功！';
+                scoreDisplay.textContent = `スコア: ${score}`;
+                resetBall(); // 次のラウンドへ
+            } else {
+                message.textContent = 'ゲームオーバー！';
+                startButton.textContent = 'もう一度プレイ';
+                startButton.style.display = 'block';
+            }
+        }
+
+        gameContainer.addEventListener('click', () => {
+            if (!isPlaying) return;
+
+            // ボールの現在位置を取得（位置で判定するのは難しいので、色で判定）
+            const ballCurrentColor = ball.style.backgroundColor;
+            const targetCurrentColor = target.style.backgroundColor;
+
+            // CSSのRGB値と一致するか確認
+            const computedBallColor = getComputedStyle(ball).backgroundColor;
+            const computedTargetColor = getComputedStyle(target).backgroundColor;
+
+            if (computedBallColor === computedTargetColor) {
+                endGame(true);
+            } else {
+                endGame(false);
+            }
+        });
+
+        startButton.addEventListener('click', startGame);
+    </script>
+</body>
+</html>
