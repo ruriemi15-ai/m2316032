@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>冷蔵庫の余り物 de 献立</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        .input-area {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result-area {
+            border-top: 2px solid #eee;
+            padding-top: 20px;
+        }
+        .recipe-card {
+            background-color: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .recipe-title {
+            font-size: 1.2em;
+            color: #388e3c;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>冷蔵庫の余り物 de 献立</h1>
+    <p>冷蔵庫にある食材を一つ入力してください。入力したら「献立を提案」ボタンを押してください。</p>
+
+    <div class="input-area">
+        <input type="text" id="foodInput" placeholder="例: 鶏肉, 卵, じゃがいも">
+        <button onclick="proposeMenu()">献立を提案</button>
+    </div>
+
+    <div class="result-area">
+        <p><strong>提案された献立:</strong></p>
+        <div id="recipeResult">
+            <p style="color: #666;">食材を入力して、ボタンを押してください。</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function proposeMenu() {
+        // ユーザーが入力した食材を取得
+        const inputFood = document.getElementById('foodInput').value.trim();
+        const resultDiv = document.getElementById('recipeResult');
+        
+        // 入力がない場合はメッセージを表示
+        if (inputFood === '') {
+            resultDiv.innerHTML = '<p style="color: red;">食材を入力してください。</p>';
+            return;
+        }
+
+        let recipeHTML = '';
+
+        // 入力された食材に対応するレシピを静的に用意
+        // **この部分がHTMLファイル単体での限界です**
+        // 実際のアプリでは、ここでデータベースを検索します
+        if (inputFood.includes('鶏肉')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">鶏肉と野菜のトマト煮込み</div>
+                    <p>レシピ: 鶏肉、玉ねぎ、じゃがいも、にんじんを一口大に切り、鍋で炒めます。トマト缶、コンソメ、塩コショウを加えて、野菜が柔らかくなるまで煮込みます。</p>
+                </div>
+            `;
+        }
+        if (inputFood.includes('卵')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">ふんわりオムライス</div>
+                    <p>レシピ: 鶏肉と玉ねぎを炒めてケチャップライスを作ります。別のフライパンで溶き卵を半熟に焼き、ライスの上にのせます。</p>
+                </div>
+            `;
+        }
+        if (inputFood.includes('じゃがいも')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">じゃがいものガレット</div>
+                    <p>レシピ: じゃがいもを細切りにし、塩コショウで味付けします。フライパンで両面に焼き色がつくまで焼いて完成です。</p>
+                </div>
+            `;
+        }
+        
+        // 提案するレシピがなければメッセージを表示
+        if (recipeHTML === '') {
+            resultDiv.innerHTML = '<p style="color: #666;">ごめんなさい、その食材に合う献立は見つかりませんでした。</p>';
+        } else {
+            resultDiv.innerHTML = recipeHTML;
+        }
+    }
+</script>
+
+</body>
+</html>
