@@ -150,8 +150,9 @@
         }
 
         let recipeHTML = '';
+        const lowercaseInput = inputFood.toLowerCase();
 
-        if (inputFood.includes('鶏肉')) {
+        if (lowercaseInput.includes('鶏肉')) {
             recipeHTML += `
                 <div class="recipe-card">
                     <div class="recipe-title">鶏肉と野菜のトマト煮込み</div>
@@ -160,7 +161,7 @@
                 </div>
             `;
         }
-        if (inputFood.includes('卵')) {
+        if (lowercaseInput.includes('卵')) {
             recipeHTML += `
                 <div class="recipe-card">
                     <div class="recipe-title">ふんわりオムライス</div>
@@ -169,7 +170,7 @@
                 </div>
             `;
         }
-        if (inputFood.includes('じゃがいも')) {
+        if (lowercaseInput.includes('じゃがいも')) {
             recipeHTML += `
                 <div class="recipe-card">
                     <div class="recipe-title">じゃがいものガレット</div>
@@ -178,7 +179,7 @@
                 </div>
             `;
         }
-        if (inputFood.includes('豚肉')) {
+        if (lowercaseInput.includes('豚肉')) {
             recipeHTML += `
                 <div class="recipe-card">
                     <div class="recipe-title">豚肉のしょうが焼き</div>
@@ -187,7 +188,7 @@
                 </div>
             `;
         }
-        if (inputFood.includes('牛肉')) {
+        if (lowercaseInput.includes('牛肉')) {
             recipeHTML += `
                 <div class="recipe-card">
                     <div class="recipe-title">牛肉とピーマンのオイスター炒め</div>
@@ -196,7 +197,7 @@
                 </div>
             `;
         }
-        if (inputFood.includes('鮭') || inputFood.includes('魚')) {
+        if (lowercaseInput.includes('鮭') || lowercaseInput.includes('魚')) {
             recipeHTML += `
                 <div class="recipe-card">
                     <div class="recipe-title">鮭のムニエル</div>
@@ -205,7 +206,7 @@
                 </div>
             `;
         }
-        if (inputFood.includes('キャベツ')) {
+        if (lowercaseInput.includes('キャベツ')) {
             recipeHTML += `
                 <div class="recipe-card">
                     <div class="recipe-title">キャベツと豚肉の味噌炒め</div>
@@ -214,7 +215,7 @@
                 </div>
             `;
         }
-        if (inputFood.includes('白菜')) {
+        if (lowercaseInput.includes('白菜')) {
             recipeHTML += `
                 <div class="recipe-card">
                     <div class="recipe-title">白菜と豚バラのミルフィーユ鍋</div>
@@ -223,7 +224,7 @@
                 </div>
             `;
         }
-        if (inputFood.includes('レタス')) {
+        if (lowercaseInput.includes('レタス')) {
             recipeHTML += `
                 <div class="recipe-card">
                     <div class="recipe-title">レタスとツナのサラダ</div>
@@ -232,7 +233,7 @@
                 </div>
             `;
         }
-        if (inputFood.includes('玉ねぎ')) {
+        if (lowercaseInput.includes('玉ねぎ')) {
             recipeHTML += `
                 <div class="recipe-card">
                     <div class="recipe-title">玉ねぎと卵のスープ</div>
@@ -241,7 +242,7 @@
                 </div>
             `;
         }
-        if (inputFood.includes('ピーマン')) {
+        if (lowercaseInput.includes('ピーマン')) {
             recipeHTML += `
                 <div class="recipe-card">
                     <div class="recipe-title">ピーマンの肉詰め</div>
@@ -250,7 +251,7 @@
                 </div>
             `;
         }
-        if (inputFood.includes('にんじん') || inputFood.includes('人参')) {
+        if (lowercaseInput.includes('にんじん') || lowercaseInput.includes('人参')) {
             recipeHTML += `
                 <div class="recipe-card">
                     <div class="recipe-title">にんじんしりしり</div>
@@ -259,7 +260,7 @@
                 </div>
             `;
         }
-        if (inputFood.includes('きゅうり') || inputFood.includes('キュウリ')) {
+        if (lowercaseInput.includes('きゅうり') || lowercaseInput.includes('キュウリ')) {
             recipeHTML += `
                 <div class="recipe-card">
                     <div class="recipe-title">きゅうりとワカメの酢の物</div>
@@ -268,7 +269,7 @@
                 </div>
             `;
         }
-        if (inputFood.includes('もやし')) {
+        if (lowercaseInput.includes('もやし')) {
             recipeHTML += `
                 <div class="recipe-card">
                     <div class="recipe-title">もやしと豚バラのレンジ蒸し</div>
@@ -277,7 +278,7 @@
                 </div>
             `;
         }
-        if (inputFood.includes('ハム')) {
+        if (lowercaseInput.includes('ハム')) {
             recipeHTML += `
                 <div class="recipe-card">
                     <div class="recipe-title">ハムとチーズのサンドイッチ</div>
@@ -286,7 +287,7 @@
                 </div>
             `;
         }
-        if (inputFood.includes('ウインナー') || inputFood.includes('ウィンナー')) {
+        if (lowercaseInput.includes('ウインナー') || lowercaseInput.includes('ウィンナー')) {
             recipeHTML += `
                 <div class="recipe-card">
                     <div class="recipe-title">ウインナーと玉ねぎのケチャップ炒め</div>
@@ -295,7 +296,7 @@
                 </div>
             `;
         }
-        if (inputFood.includes('ベーコン')) {
+        if (lowercaseInput.includes('ベーコン')) {
             recipeHTML += `
                 <div class="recipe-card">
                     <div class="recipe-title">ベーコンとほうれん草のソテー</div>
@@ -304,7 +305,7 @@
                 </div>
             `;
         }
-        if (inputFood.includes('鶏むね肉')) {
+        if (lowercaseInput.includes('鶏むね肉')) {
             recipeHTML += `
                 <div class="recipe-card">
                     <div class="recipe-title">鶏むね肉のやわらかチキンソテー</div>
@@ -313,7 +314,7 @@
                 </div>
             `;
         }
-        if (inputFood.includes('ツナ缶')) {
+        if (lowercaseInput.includes('ツナ缶')) {
             recipeHTML += `
                 <div class="recipe-card">
                     <div class="recipe-title">ツナとトマトのパスタ</div>
@@ -322,7 +323,7 @@
                 </div>
             `;
         }
-        if (inputFood.includes('ケチャップ')) {
+        if (lowercaseInput.includes('ケチャップ')) {
             recipeHTML += `
                 <div class="recipe-card">
                     <div class="recipe-title">ナポリタン</div>
@@ -331,7 +332,7 @@
                 </div>
             `;
         }
-        if (inputFood.includes('マヨネーズ')) {
+        if (lowercaseInput.includes('マヨネーズ')) {
             recipeHTML += `
                 <div class="recipe-card">
                     <div class="recipe-title">マヨネーズトースト</div>
@@ -340,7 +341,7 @@
                 </div>
             `;
         }
-        if (inputFood.includes('バター')) {
+        if (lowercaseInput.includes('バター')) {
             recipeHTML += `
                 <div class="recipe-card">
                     <div class="recipe-title">じゃがバター</div>
@@ -349,7 +350,7 @@
                 </div>
             `;
         }
-        if (inputFood.includes('チーズ')) {
+        if (lowercaseInput.includes('チーズ')) {
             recipeHTML += `
                 <div class="recipe-card">
                     <div class="recipe-title">チーズオムレツ</div>
@@ -358,7 +359,7 @@
                 </div>
             `;
         }
-        if (inputFood.includes('牛乳')) {
+        if (lowercaseInput.includes('牛乳')) {
             recipeHTML += `
                 <div class="recipe-card">
                     <div class="recipe-title">クリームシチュー</div>
@@ -367,7 +368,7 @@
                 </div>
             `;
         }
-        if (inputFood.includes('豆腐')) {
+        if (lowercaseInput.includes('豆腐')) {
             recipeHTML += `
                 <div class="recipe-card">
                     <div class="recipe-title">麻婆豆腐</div>
@@ -376,7 +377,7 @@
                 </div>
             `;
         }
-        if (inputFood.includes('ヨーグルト')) {
+        if (lowercaseInput.includes('ヨーグルト')) {
             recipeHTML += `
                 <div class="recipe-card">
                     <div class="recipe-title">フルーツヨーグルト</div>
@@ -414,7 +415,6 @@
         
         memoList.appendChild(newMemoItem);
 
-        // 入力欄をクリア
         dateInput.value = '';
         foodInput.value = '';
     }
