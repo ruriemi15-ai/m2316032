@@ -1,125 +1,322 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>冷蔵庫の余り物 de 献立</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #4CAF50;
-        }
-        .input-area {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        input[type="text"] {
-            flex-grow: 1;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .result-area {
-            border-top: 2px solid #eee;
-            padding-top: 20px;
-        }
-        .recipe-card {
-            background-color: #e8f5e9;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-        }
-        .recipe-title {
-            font-size: 1.2em;
-            color: #388e3c;
-            margin-bottom: 5px;
-        }
-        .calories {
-            font-size: 0.9em;
-            color: #777;
-            margin-top: 5px;
-            font-weight: bold;
-        }
-        .memo-area {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 2px solid #eee;
-        }
-        .memo-input {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-        .memo-input input[type="date"],
-        .memo-input input[type="text"] {
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        #memoList {
-            list-style: none;
-            padding: 0;
-        }
-        #memoList li {
-            background-color: #f9f9f9;
-            padding: 10px;
-            border-left: 4px solid #4CAF50;
-            margin-bottom: 8px;
-            border-radius: 4px;
-        }
-        #memoList li .remove-btn {
-            float: right;
-            background-color: #ff4d4d;
-            color: white;
-            border: none;
-            padding: 3px 8px;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-        #memoList li .remove-btn:hover {
-            background-color: #cc0000;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>冷蔵庫の余り物 de 献立</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        .input-area {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result-area {
+            border-top: 2px solid #eee;
+            padding-top: 20px;
+        }
+        .recipe-card {
+            background-color: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .recipe-title {
+            font-size: 1.2em;
+            color: #388e3c;
+            margin-bottom: 5px;
+        }
+    </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>冷蔵庫の余り物 de 献立</h1>
-    <p>冷蔵庫にある食材を一つ入力してください。入力したら「献立を提案」ボタンを押してください。</p>
+    <h1>冷蔵庫の余り物 de 献立</h1>
+    <p>冷蔵庫にある食材を一つ入力してください。入力したら「献立を提案」ボタンを押してください。</p>
 
-    <div class="input-area">
-        <input type="text" id="foodInput" placeholder="例: 鶏肉, 豚肉, 鮭">
-        <button onclick="proposeMenu()">献立を提案</button>
-    </div>
+    <div class="input-area">
+        <input type="text" id="foodInput" placeholder="例: 鶏肉, 豚肉, 鮭">
+        <button onclick="proposeMenu()">献立を提案</button>
+    </div>
 
-    <div class="result-area">
-        <p><strong>提案された献立:</strong></p>
-        <div id="recipe
+    <div class="result-area">
+        <p><strong>提案された献立:</strong></p>
+        <div id="recipeResult">
+            <p style="color: #666;">食材を入力して、ボタンを押してください。</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    function proposeMenu() {
+        // ユーザーが入力した食材を取得
+        const inputFood = document.getElementById('foodInput').value.trim();
+        const resultDiv = document.getElementById('recipeResult');
+        
+        // 入力がない場合はメッセージを表示
+        if (inputFood === '') {
+            resultDiv.innerHTML = '<p style="color: red;">食材を入力してください。</p>';
+            return;
+        }
+
+        let recipeHTML = '';
+
+        // 入力された食材に対応するレシピを静的に用意
+        // これらは、入力された食材が含まれていれば複数表示されます
+        if (inputFood.includes('鶏肉')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">鶏肉と野菜のトマト煮込み</div>
+                    <p>レシピ: 鶏肉、玉ねぎ、じゃがいも、にんじんを一口大に切り、鍋で炒めます。トマト缶、コンソメ、塩コショウを加えて、野菜が柔らかくなるまで煮込みます。</p>
+                </div>
+            `;
+        }
+        if (inputFood.includes('卵')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">ふんわりオムライス</div>
+                    <p>レシピ: 鶏肉と玉ねぎを炒めてケチャップライスを作ります。別のフライパンで溶き卵を半熟に焼き、ライスの上にのせます。</p>
+                </div>
+            `;
+        }
+        if (inputFood.includes('じゃがいも')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">じゃがいものガレット</div>
+                    <p>レシピ: じゃがいもを細切りにし、塩コショウで味付けします。フライパンで両面に焼き色がつくまで焼いて完成です。</p>
+                </div>
+            `;
+        }
+        if (inputFood.includes('豚肉')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">豚肉のしょうが焼き</div>
+                    <p>レシピ: 豚肉をタレ（しょうゆ、みりん、酒、おろししょうが）に漬け込み、フライパンで焼きます。玉ねぎと一緒に炒めても美味しいです。</p>
+                </div>
+            `;
+        }
+        if (inputFood.includes('牛肉')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">牛肉とピーマンのオイスター炒め</div>
+                    <p>レシピ: 牛肉とピーマンを細切りにし、ごま油をひいたフライパンで炒めます。オイスターソースとしょうゆで味付けします。</p>
+                </div>
+            `;
+        }
+        if (inputFood.includes('鮭') || inputFood.includes('魚')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">鮭のムニエル</div>
+                    <p>レシピ: 鮭に塩コショウをふり、薄力粉をまぶします。バターを溶かしたフライパンで両面を焼き、レモン汁をかけて完成です。</p>
+                </div>
+            `;
+        }
+        if (inputFood.includes('キャベツ')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">キャベツと豚肉の味噌炒め</div>
+                    <p>レシピ: 豚肉とキャベツ、玉ねぎを食べやすい大きさに切ります。フライパンで炒め、味噌、酒、みりん、砂糖で作った合わせ調味料で味付けします。</p>
+                </div>
+            `;
+        }
+        if (inputFood.includes('白菜')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">白菜と豚バラのミルフィーユ鍋</div>
+                    <p>レシピ: 鍋に白菜と豚バラ肉を交互に重ねて敷き詰めます。だし汁を加えて火にかけ、白菜がしんなりするまで煮ます。ポン酢やごまだれでどうぞ。</p>
+                </div>
+            `;
+        }
+        if (inputFood.includes('レタス')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">レタスとツナのサラダ</div>
+                    <p>レシピ: レタスをちぎって皿に盛り、ツナ缶を油ごと上にのせます。お好みのドレッシングやマヨネーズで和えて完成です。</p>
+                </div>
+            `;
+        }
+        if (inputFood.includes('玉ねぎ')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">玉ねぎと卵のスープ</div>
+                    <p>レシピ: 玉ねぎを薄切りにし、水とコンソメで煮ます。溶き卵を回し入れ、塩コショウで味を調えます。</p>
+                </div>
+            `;
+        }
+        if (inputFood.includes('ピーマン')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">ピーマンの肉詰め</div>
+                    <p>レシピ: ピーマンを半分に切り、タネを取り除きます。ひき肉、玉ねぎ、パン粉、卵を混ぜたタネを詰めて、フライパンで焼き、ケチャップをかけていただきます。</p>
+                </div>
+            `;
+        }
+        if (inputFood.includes('にんじん') || inputFood.includes('人参')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">にんじんしりしり</div>
+                    <p>レシピ: にんじんを細切りにし、ごま油で炒めます。ツナ缶を加えて炒め、醤油とみりんで味付けします。</p>
+                </div>
+            `;
+        }
+        if (inputFood.includes('きゅうり') || inputFood.includes('キュウリ')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">きゅうりとワカメの酢の物</div>
+                    <p>レシピ: きゅうりを薄切りにし、塩もみします。ワカメと合わせて、酢、砂糖、醤油を混ぜた合わせ酢で和えます。</p>
+                </div>
+            `;
+        }
+        if (inputFood.includes('もやし')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">もやしと豚バラのレンジ蒸し</div>
+                    <p>レシピ: 耐熱皿にもやしを広げ、その上に豚バラ肉を並べます。酒をふりかけ、ふんわりラップをして電子レンジで加熱します。ポン酢をかけてどうぞ。</p>
+                </div>
+            `;
+        }
+        if (inputFood.includes('ハム')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">ハムとチーズのサンドイッチ</div>
+                    <p>レシピ: 食パンにバターを塗り、ハムとチーズを挟みます。トースターで焼いて、とろけるチーズを楽しむのもおすすめです。</p>
+                </div>
+            `;
+        }
+        if (inputFood.includes('ウインナー') || inputFood.includes('ウィンナー')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">ウインナーと玉ねぎのケチャップ炒め</div>
+                    <p>レシピ: ウインナーと玉ねぎを炒め、ケチャップで味付けします。お弁当のおかずにもぴったりです。</p>
+                </div>
+            `;
+        }
+        if (inputFood.includes('ベーコン')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">ベーコンとほうれん草のソテー</div>
+                    <p>レシピ: ベーコンとほうれん草をバターで炒め、塩コショウで味を調えます。</p>
+                </div>
+            `;
+        }
+        if (inputFood.includes('鶏むね肉')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">鶏むね肉のやわらかチキンソテー</div>
+                    <p>レシピ: 鶏むね肉を削ぎ切りにし、酒と片栗粉をもみこんで柔らかくします。フライパンで両面を焼き、お好みのソースでいただきます。</p>
+                </div>
+            `;
+        }
+        if (inputFood.includes('ツナ缶')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">ツナとトマトのパスタ</div>
+                    <p>レシピ: パスタを茹で、フライパンでツナ缶（油ごと）、にんにく、トマトを炒め、茹でたパスタと混ぜます。塩コショウで味を調えます。</p>
+                </div>
+            `;
+        }
+        if (inputFood.includes('ケチャップ')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">ナポリタン</div>
+                    <p>レシピ: パスタを茹で、フライパンで玉ねぎ、ピーマン、ウインナーを炒めます。ケチャップをたっぷり加えてパスタと和えます。</p>
+                </div>
+            `;
+        }
+        if (inputFood.includes('マヨネーズ')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">マヨネーズトースト</div>
+                    <p>レシピ: 食パンにマヨネーズで土手を作り、その中に卵を割り入れ、オーブントースターで焼きます。塩コショウを振って完成です。</p>
+                </div>
+            `;
+        }
+        if (inputFood.includes('バター')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">じゃがバター</div>
+                    <p>レシピ: じゃがいもを電子レンジで柔らかくし、熱いうちにバターと塩をのせます。お好みで醤油をたらしても美味しいです。</p>
+                </div>
+            `;
+        }
+        if (inputFood.includes('チーズ')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">チーズオムレツ</div>
+                    <p>レシピ: 溶き卵にチーズを混ぜて焼きます。とろーりとした食感が楽しめます。</p>
+                </div>
+            `;
+        }
+        if (inputFood.includes('牛乳')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">クリームシチュー</div>
+                    <p>レシピ: 鶏肉、じゃがいも、にんじん、玉ねぎなどを炒め、水とコンソメで煮ます。具材が柔らかくなったら牛乳を加え、市販のルーでとろみをつけます。</p>
+                </div>
+            `;
+        }
+        if (inputFood.includes('豆腐')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">麻婆豆腐</div>
+                    <p>レシピ: 豆腐を食べやすい大きさに切り、ひき肉とネギを炒めます。調味料（豆板醤、甜麺醤など）と水を加えて煮込み、水溶き片栗粉でとろみをつけます。</p>
+                </div>
+            `;
+        }
+        if (inputFood.includes('ヨーグルト')) {
+            recipeHTML += `
+                <div class="recipe-card">
+                    <div class="recipe-title">フルーツヨーグルト</div>
+                    <p>レシピ: ヨーグルトにバナナやイチゴなどお好みのフルーツを加えて混ぜるだけで、簡単デザートになります。</p>
+                </div>
+            `;
+        }
+
+        
+        // 提案するレシピがなければメッセージを表示
+        if (recipeHTML === '') {
+            resultDiv.innerHTML = '<p style="color: #666;">ごめんなさい、その食材に合う献立は見つかりませんでした。</p>';
+        } else {
+            resultDiv.innerHTML = recipeHTML;
+        }
+    }
+</script>
+
+</body>
+</html>
