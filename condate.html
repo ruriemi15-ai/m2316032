@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>冷蔵庫の余り物活用アプリ</title>
+    <style>
+        /*
+        * CSSスタイルをここに記述
+        */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+
+        .hero {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            padding: 40px 0;
+            background-color: #e9f5e9;
+        }
+
+        .hero-text {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+        }
+
+        .hero-text h2 {
+            color: #4CAF50;
+            font-size: 1.8em;
+            margin-top: 0;
+            border-left: 4px solid #4CAF50;
+            padding-left: 10px;
+        }
+
+        .hero-text ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .hero-text li {
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%234CAF50" width="24px" height="24px"><path d="M0 0h24v24H0z" fill="none"/><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>') no-repeat left center;
+            background-size: 20px;
+            padding-left: 30px;
+            margin-bottom: 15px;
+        }
+
+        .hero-image {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .chef-image {
+            max-width: 150px;
+            margin: 0 20px;
+            vertical-align: middle;
+        }
+
+        .features {
+            padding: 40px 0;
+            background: #fff;
+        }
+
+        .features h2 {
+            text-align: center;
+            color: #4CAF50;
+            font-size: 1.8em;
+            margin-bottom: 30px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .feature-icon {
+            font-size: 2em;
+            color: #4CAF50;
+            margin-right: 15px;
+        }
+
+        .feature-text p {
+            margin: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+            }
+            
+            header h1 {
+                font-size: 2em;
+            }
+            
+            .chef-image {
+                max-width: 120px;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>冷蔵庫の余り物活用アプリ</h1>
+        <img src="https://i.ibb.co/6yqG2mP/chef.png" alt="料理をするシェフのイラスト" class="chef-image">
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <div class="hero-text">
+                <h2>開発動機</h2>
+                <ul>
+                    <li>冷蔵庫の余り食材を、無駄なく使い切りたい。</li>
+                    <li>献立を簡単に決めたい。余り物から作れるレシピを効率的に探したい。</li>
+                    <li>食材ロスをなくすことで、食費を抑えたい。</li>
+                </ul>
+            </div>
+            <div class="hero-image">
+                <img src="https://i.ibb.co/S60bN1K/phone-app.png" alt="アプリのスクリーンショットが映るスマートフォン">
+            </div>
+        </section>
+
+        <section class="features">
+            <h2>特徴</h2>
+            <div class="feature-item">
+                <div class="feature-icon"></div>
+                <div class="feature-text">
+                    <p><strong>写真撮影で簡単管理</strong></p>
+                    <p>冷蔵庫の中身を写真に撮るだけで、食材を自動で認識・管理します。</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon"></div>
+                <div class="feature-text">
+                    <p><strong>余り食材に合わせたレシピ提案</strong></p>
+                    <p>余っている食材にぴったりのレシピを優先的に提案。毎日の献立の悩みを解決します。</p>
+                </div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon"></div>
+                <div class="feature-text">
+                    <p><strong>自動買い物リスト作成</strong></p>
+                    <p>献立に必要な食材や不足しているものを自動でリスト化。日々の料理をサポートします。</p>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
